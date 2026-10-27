@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Eventora wedding and event planning website with demo login and sign-up pages.">
+  <title>Eventora | Wedding & Event Planning</title>
+  <style>
+    :root {
+      --pink: #d85d8b;
+      --pink-dark: #b94372;
+      --pink-soft: #fff0f5;
+      --blush: #fbe0e9;
+      --ink: #35222d;
+      --muted: #7b6872;
+      --white: #fff;
+      --line: #f0dce5;
+      --shadow: 0 18px 50px rgba(127, 57, 86, .12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: Arial, Helvetica, sans-serif; color: var(--ink); background: var(--white); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+    .container { width: min(1120px, 92%); margin: auto; }
+    .topbar { background: #4b2d3b; color: #fff; font-size: .83rem; padding: 8px 0; text-align: center; }
+    header { background: rgba(255,255,255,.96); position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); }
+    .nav { min-height: 74px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+    .logo { font-size: 1.55rem; font-weight: 900; letter-spacing: -.7px; }
+    .logo span { color: var(--pink); }
+    .nav-links { display: flex; align-items: center; gap: 22px; list-style: none; }
+    .nav-links a { font-size: .93rem; font-weight: 700; color: #59434e; }
+    .nav-links a:hover { color: var(--pink-dark); }
+    .btn { display: inline-flex; justify-content: center; align-items: center; border: 0; cursor: pointer; border-radius: 999px; padding: 12px 21px; font-weight: 800; transition: .2s ease; }
+    .btn-primary { background: var(--pink); color: white; box-shadow: 0 9px 20px rgba(216,93,139,.22); }
+    .btn-primary:hover { background: var(--pink-dark); transform: translateY(-2px); }
+    .btn-light { color: var(--pink-dark); background: white; border: 1px solid var(--line); }
+    .btn-outline { color: var(--pink-dark) !important; border: 1px solid var(--pink); border-radius: 999px; padding: 8px 15px; }
+    .menu-toggle { display: none; border: 0; background: transparent; font-size: 1.8rem; cursor: pointer; color: var(--ink); }
+    .hero { overflow: hidden; background: linear-gradient(120deg, #fff9fb 0%, #ffeaf2 56%, #fff 100%); padding: 68px 0 78px; }
+    .hero-grid { display: grid; grid-template-columns: 1.03fr .97fr; align-items: center; gap: 48px; }
+    .eyebrow { color: var(--pink-dark); text-transform: uppercase; letter-spacing: 2px; font-size: .78rem; font-weight: 900; margin-bottom: 15px; }
+    h1 { font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: 1.08; letter-spacing: -2px; margin-bottom: 20px; }
+    h1 span { color: var(--pink-dark); }
+    .hero p { color: var(--muted); font-size: 1.06rem; max-width: 520px; margin-bottom: 26px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-note { display: flex; align-items: center; gap: 12px; margin-top: 26px; color: var(--muted); font-size: .88rem; }
+    .avatars { display: flex; }
+    .avatars span { width: 31px; height: 31px; display: grid; place-items: center; border: 2px solid white; border-radius: 50%; margin-left: -7px; background: #f8d2e1; }
+    .avatars span:first-child { margin-left: 0; }
+    .hero-art { min-height: 405px; position: relative; display: grid; place-items: center; }
+    .hero-photo { width: min(100%, 480px); height: 400px; border-radius: 48% 48% 24px 24px; background: linear-gradient(0deg, rgba(53,34,45,.10), rgba(53,34,45,0)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85') center/cover; box-shadow: var(--shadow); }
+    .floating-card { position: absolute; background: white; padding: 13px 16px; border-radius: 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 11px; }
+    .floating-card strong { display: block; font-size: .92rem; }
+    .floating-card small { color: var(--muted); }
+    .float-one { left: -5px; bottom: 48px; }
+    .float-two { right: -5px; top: 38px; }
+    .float-icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: var(--pink-soft); font-size: 1.25rem; }
+    .stats { padding: 24px 0; border-bottom: 1px solid var(--line); }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; gap: 20px; }
+    .stat strong { font-size: 1.8rem; color: var(--pink-dark); display: block; }
+    .stat span { color: var(--muted); font-size: .9rem; }
+    section { padding: 78px 0; }
+    .section-head { text-align: center; max-width: 650px; margin: 0 auto 38px; }
+    .section-head h2 { font-size: clamp(2rem, 4vw, 2.75rem); letter-spacing: -1px; line-height: 1.15; margin-bottom: 13px; }
+    .section-head p { color: var(--muted); }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .event-card { border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: white; transition: .25s; }
+    .event-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .event-image { height: 215px; background-size: cover; background-position: center; }
+    .event-content { padding: 22px; }
+    .tag { display: inline-block; color: var(--pink-dark); background: var(--pink-soft); padding: 5px 10px; border-radius: 999px; font-size: .75rem; font-weight: 800; margin-bottom: 12px; }
+    .event-content h3 { font-size: 1.22rem; margin-bottom: 8px; }
+    .event-content p { color: var(--muted); font-size: .93rem; margin-bottom: 15px; }
+    .text-link { color: var(--pink-dark); font-weight: 800; }
+    .services { background: #fff8fb; }
+    .service-card { padding: 27px 24px; border-radius: 20px; background: white; border: 1px solid var(--line); }
+    .service-icon { font-size: 1.7rem; width: 58px; height: 58px; display: grid; place-items: center; background: var(--pink-soft); border-radius: 17px; margin-bottom: 17px; }
+    .service-card h3 { margin-bottom: 8px; }
+    .service-card p { color: var(--muted); font-size: .94rem; }
+    .about-grid { display: grid; grid-template-columns: .95fr 1.05fr; align-items: center; gap: 52px; }
+    .about-photo { min-height: 410px; border-radius: 26px; background: url('https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1000&q=85') center/cover; }
+    .about-copy h2 { font-size: clamp(2rem, 4vw, 2.75rem); line-height: 1.15; margin-bottom: 17px; }
+    .about-copy p { color: var(--muted); margin-bottom: 17px; }
+    .check-list { list-style: none; margin: 21px 0 27px; }
+    .check-list li { margin: 10px 0; font-weight: 700; }
+    .check-list li::before { content: "✓"; color: var(--pink-dark); font-weight: 900; margin-right: 10px; }
+    .booking { background: linear-gradient(120deg, #fff0f5, #fffafc); }
+    .booking-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 42px; align-items: start; }
+    .booking-copy h2 { font-size: clamp(2rem, 4vw, 2.75rem); line-height: 1.15; margin-bottom: 17px; }
+    .booking-copy p { color: var(--muted); margin-bottom: 22px; }
+    .contact-line { margin: 13px 0; font-weight: 700; }
+    .booking-form { background: white; padding: 28px; border-radius: 24px; box-shadow: var(--shadow); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field.full { grid-column: 1 / -1; }
+    label { font-weight: 800; font-size: .87rem; }
+    input, select, textarea { width: 100%; border: 1px solid #ead7e0; border-radius: 11px; padding: 12px 13px; background: white; color: var(--ink); outline: none; }
+    input:focus, select:focus, textarea:focus { border-color: var(--pink); box-shadow: 0 0 0 3px rgba(216,93,139,.12); }
+    textarea { min-height: 100px; resize: vertical; }
+    .form-message { margin-top: 13px; font-weight: 700; color: #28794b; }
+    .form-note { color: var(--muted); font-size: .8rem; margin-top: 10px; }
+    .contact-strip { padding: 35px 0; }
+    .contact-box { background: #4b2d3b; color: white; border-radius: 24px; padding: 31px 36px; display: flex; justify-content: space-between; align-items: center; gap: 22px; }
+    .contact-box p { color: #f1dce5; }
+    footer { background: #2e1d27; color: white; padding: 32px 0; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap; }
+    footer p, footer a { color: #e5ccd7; font-size: .9rem; }
+    .footer-links { display: flex; gap: 17px; flex-wrap: wrap; }
+
+    /* Login and sign-up modal */
+    .auth-backdrop { display: none; position: fixed; inset: 0; background: rgba(42,24,34,.62); z-index: 50; padding: 18px; overflow-y: auto; align-items: center; justify-content: center; }
+    .auth-backdrop.show { display: flex; }
+    .auth-panel { position: relative; width: min(440px, 100%); background: white; border-radius: 25px; padding: 30px; box-shadow: 0 25px 80px rgba(0,0,0,.22); }
+    .auth-close { position: absolute; right: 15px; top: 12px; border: 0; background: var(--pink-soft); color: var(--pink-dark); width: 36px; height: 36px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; }
+    .auth-logo { font-size: 1.35rem; font-weight: 900; margin-bottom: 15px; }
+    .auth-logo span { color: var(--pink); }
+    .auth-panel h2 { font-size: 1.8rem; margin-bottom: 5px; }
+    .auth-subtitle { color: var(--muted); font-size: .92rem; margin-bottom: 22px; }
+    .auth-tabs { display: grid; grid-template-columns: 1fr 1fr; padding: 5px; border-radius: 13px; background: var(--pink-soft); gap: 5px; margin-bottom: 22px; }
+    .auth-tab { border: 0; border-radius: 10px; background: transparent; color: var(--muted); font-weight: 800; padding: 10px; cursor: pointer; }
+    .auth-tab.active { color: var(--pink-dark); background: white; box-shadow: 0 3px 12px rgba(127,57,86,.08); }
+    .auth-form { display: none; }
+    .auth-form.active { display: block; }
+    .auth-form .field { margin-bottom: 14px; }
+    .auth-form .btn { width: 100%; margin-top: 4px; }
+    .auth-message { margin-top: 13px; font-size: .9rem; font-weight: 700; color: #28794b; overflow-wrap: anywhere; }
+    .auth-footnote { font-size: .77rem; color: var(--muted); margin-top: 16px; }
+    .user-chip { color: var(--pink-dark); font-size: .84rem; font-weight: 800; display: none; }
+    @media (max-width: 850px) {
+      .nav-links { gap: 13px; }
+      .nav-links a { font-size: .83rem; }
+      .hero-grid, .about-grid, .booking-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 52px; }
+      .hero-art { min-height: 355px; }
+      .hero-photo { height: 345px; max-width: 440px; }
+      .about-photo { min-height: 315px; }
+      .booking-grid { gap: 25px; }
+    }
+    @media (max-width: 650px) {
+      .menu-toggle { display: block; }
+      .nav { min-height: 67px; }
+      .nav-links { display: none; position: absolute; top: 67px; left: 0; right: 0; background: white; padding: 18px 5%; border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; gap: 15px; }
+      .nav-links.open { display: flex; }
+      .nav-links .btn, .nav-links .btn-outline { width: 100%; text-align: center; }
+      .cards { grid-template-columns: 1fr; }
+      .event-image { height: 225px; }
+      section { padding: 58px 0; }
+      .stats-grid { grid-template-columns: 1fr; gap: 13px; }
+      .hero-art { min-height: 300px; }
+      .hero-photo { height: 290px; }
+      .floating-card { padding: 9px 11px; }
+      .float-one { left: 0; bottom: 20px; }
+      .float-two { right: 0; top: 15px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .booking-form { padding: 21px; }
+      .contact-box { align-items: flex-start; flex-direction: column; padding: 25px; }
+      h1 { letter-spacing: -1.4px; }
+      .auth-panel { padding: 25px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">For the moments that deserve a little extra love ♡</div>
+  <header>
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="logo" href="#home">event<span>ora.</span></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li><li><a href="#events">Events</a></li><li><a href="#services">Services</a></li><li><a href="#about">About</a></li>
+        <li><a class="btn btn-outline" href="#booking">Book Event</a></li>
+        <li><button class="btn btn-primary" type="button" id="openLogin">Login / Sign Up</button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Love · Celebrate · Remember</div>
+          <h1>Your dream day, <span>beautifully planned.</span></h1>
+          <p>From romantic weddings to joyful birthdays and special gatherings, Eventora brings your ideas to life with elegant details and thoughtful planning.</p>
+          <div class="hero-actions"><a href="#booking" class="btn btn-primary">Plan Your Event ↗</a><a href="#events" class="btn btn-light">Explore Events</a></div>
+          <div class="hero-note"><div class="avatars"><span>♡</span><span>✿</span><span>✦</span></div><span>Beautiful details. Meaningful memories.</span></div>
+        </div>
+        <div class="hero-art">
+          <div class="hero-photo" role="img" aria-label="Romantic wedding venue"></div>
+          <div class="floating-card float-one"><div class="float-icon">🌷</div><div><strong>Made with love</strong><small>Every detail matters</small></div></div>
+          <div class="floating-card float-two"><div class="float-icon">♡</div><div><strong>Your day, your way</strong><small>Personalized planning</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="stats"><div class="container stats-grid"><div class="stat"><strong>150+</strong><span>Events planned</span></div><div class="stat"><strong>98%</strong><span>Happy clients</span></div><div class="stat"><strong>5 years</strong><span>Creating memories</span></div></div></div>
+
+    <section id="events"><div class="container">
+      <div class="section-head"><div class="eyebrow">Our specialties</div><h2>Celebrate every chapter</h2><p>Thoughtful planning and beautiful details for the moments that matter most.</p></div>
+      <div class="cards">
+        <article class="event-card"><div class="event-image" style="background-image:url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80')" role="img" aria-label="Wedding ceremony"></div><div class="event-content"><span class="tag">LOVE & JOY</span><h3>Wedding Events</h3><p>Romantic decor, elegant stages, and a celebration tailored to your story.</p><a class="text-link book-type" href="#booking" data-type="Wedding">Plan a wedding ↗</a></div></article>
+        <article class="event-card"><div class="event-image" style="background-image:url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=900&q=80')" role="img" aria-label="Birthday party balloons"></div><div class="event-content"><span class="tag">FUN & COLOR</span><h3>Birthday Parties</h3><p>Sweet themes, lovely balloons, and happy details for every age.</p><a class="text-link book-type" href="#booking" data-type="Birthday">Plan a birthday ↗</a></div></article>
+        <article class="event-card"><div class="event-image" style="background-image:url('https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80')" role="img" aria-label="Corporate event"></div><div class="event-content"><span class="tag">CONNECT & GROW</span><h3>Corporate Events</h3><p>Professional launches, conferences, and gatherings planned with care.</p><a class="text-link book-type" href="#booking" data-type="Corporate">Plan a corporate event ↗</a></div></article>
+      </div>
+    </div></section>
+
+    <section class="services" id="services"><div class="container">
+      <div class="section-head"><div class="eyebrow">What we do</div><h2>All the details, taken care of</h2><p>Choose the support you need and enjoy more of the celebration.</p></div>
+      <div class="cards">
+        <article class="service-card"><div class="service-icon">🌸</div><h3>Theme & Decoration</h3><p>Flowers, stage styling, lighting, color palettes, and custom setups.</p></article>
+        <article class="service-card"><div class="service-icon">🗓️</div><h3>Planning & Coordination</h3><p>Timelines, vendor coordination, budgets, and event-day management.</p></article>
+        <article class="service-card"><div class="service-icon">🍰</div><h3>Catering & Venue</h3><p>Help finding venues, menus, and vendors to suit your event and budget.</p></article>
+      </div>
+    </div></section>
+
+    <section id="about"><div class="container about-grid">
+      <div class="about-photo" role="img" aria-label="Elegant wedding reception decorations"></div>
+      <div class="about-copy"><div class="eyebrow">A little about us</div><h2>Every love story deserves a lovely celebration.</h2><p>At Eventora, we listen to your ideas, respect your budget, and bring the details together to create a day that feels personal and memorable.</p><ul class="check-list"><li>Planning tailored to your needs</li><li>Clear communication at every step</li><li>Creative ideas for different budgets</li></ul><a href="#booking" class="btn btn-primary">Let's plan together ↗</a></div>
+    </div></section>
+
+    <section class="booking" id="booking"><div class="container booking-grid">
+      <div class="booking-copy"><div class="eyebrow">Let's get started</div><h2>Tell us about your event</h2><p>Share a few details to start planning your celebration. This demo shows a confirmation on this page.</p><div class="contact-line">✉️ hello@eventora.example</div><div class="contact-line">📞 +92 300 1234567</div><div class="contact-line">📍 Karachi, Pakistan</div></div>
+      <form class="booking-form" id="bookingForm"><div class="form-grid">
+        <div class="field"><label for="name">Your name *</label><input id="name" name="name" required minlength="2" placeholder="Enter your name"></div>
+        <div class="field"><label for="email">Email address *</label><input id="email" name="email" type="email" required placeholder="you@example.com"></div>
+        <div class="field"><label for="eventType">Event type *</label><select id="eventType" name="eventType" required><option value="">Select an event</option><option>Wedding</option><option>Birthday</option><option>Corporate</option><option>Engagement</option><option>Other</option></select></div>
+        <div class="field"><label for="date">Preferred date</label><input id="date" name="date" type="date"></div>
+        <div class="field"><label for="guests">Number of guests</label><select id="guests" name="guests"><option value="">Select guest count</option><option>1–25</option><option>26–50</option><option>51–100</option><option>101–250</option><option>250+</option></select></div>
+        <div class="field"><label for="budget">Estimated budget (PKR)</label><select id="budget" name="budget"><option value="">Choose budget</option><option>Under 50,000</option><option>50,000–150,000</option><option>150,000–300,000</option><option>300,000+</option></select></div>
+        <div class="field full"><label for="details">Tell us more</label><textarea id="details" name="details" placeholder="Theme, venue, or special requests..."></textarea></div>
+        <div class="field full"><button class="btn btn-primary" type="submit">Send Booking Request ↗</button><p class="form-note">Demo only: this form does not send or save information to a server.</p><p class="form-message" id="formMessage" role="status" aria-live="polite"></p></div>
+      </div></form>
+    </div></section>
+
+    <div class="contact-strip"><div class="container contact-box"><div><h2>Ready to celebrate?</h2><p>Let's make your next special moment unforgettable.</p></div><a class="btn btn-light" href="#booking">Get in touch ↗</a></div></div>
+  </main>
+
+  <footer><div class="container footer-inner"><a class="logo" href="#home">event<span>ora.</span></a><p>© <span id="year"></span> Eventora. Learning project.</p><div class="footer-links"><a href="#events">Events</a><a href="#services">Services</a><a href="#booking">Contact</a><a href="#" id="footerLogin">Login</a></div></div></footer>
+
+  <!-- Authentication popup: demo-only account storage in this browser -->
+  <div class="auth-backdrop" id="authBackdrop" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="auth-panel">
+      <button class="auth-close" id="authClose" type="button" aria-label="Close login window">×</button>
+      <div class="auth-logo">event<span>ora.</span> ♡</div>
+      <h2 id="authTitle">Welcome back</h2>
+      <p class="auth-subtitle" id="authSubtitle">Log in to continue planning your special event.</p>
+      <div class="auth-tabs"><button class="auth-tab active" id="loginTab" type="button">Login</button><button class="auth-tab" id="signupTab" type="button">Sign Up</button></div>
+
+      <form class="auth-form active" id="loginForm">
+        <div class="field"><label for="loginEmail">Email address</label><input id="loginEmail" type="email" required autocomplete="email" placeholder="you@example.com"></div>
+        <div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" required minlength="6" autocomplete="current-password" placeholder="At least 6 characters"></div>
+        <button class="btn btn-primary" type="submit">Login to Eventora</button>
+        <p class="auth-message" id="loginMessage" role="status" aria-live="polite"></p>
+      </form>
+
+      <form class="auth-form" id="signupForm">
+        <div class="field"><label for="signupName">Full name</label><input id="signupName" type="text" required minlength="2" autocomplete="name" placeholder="Your full name"></div>
+        <div class="field"><label for="signupEmail">Email address</label><input id="signupEmail" type="email" required autocomplete="email" placeholder="you@example.com"></div>
+        <div class="field"><label for="signupPassword">Create password</label><input id="signupPassword" type="password" required minlength="6" autocomplete="new-password" placeholder="At least 6 characters"></div>
+        <div class="field"><label for="signupConfirm">Confirm password</label><input id="signupConfirm" type="password" required minlength="6" autocomplete="new-password" placeholder="Enter password again"></div>
+        <button class="btn btn-primary" type="submit">Create Account</button>
+        <p class="auth-message" id="signupMessage" role="status" aria-live="polite"></p>
+      </form>
+      <p class="auth-footnote">Practice project only. This demo stores an account in your browser and is not secure for real users. Never use a real or reused password here.</p>
+    </div>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const menuToggle = $('menuToggle');
+    const navLinks = $('navLinks');
+    const backdrop = $('authBackdrop');
+    const loginForm = $('loginForm');
+    const signupForm = $('signupForm');
+
+    // Mobile navigation
+    menuToggle.addEventListener('click', () => {
+      const opened = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(opened));
+      menuToggle.textContent = opened ? '✕' : '☰';
+    });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.textContent = '☰';
+    }));
+
+    // Open/close the authentication popup
+    function openAuth(mode = 'login') {
+      backdrop.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      setAuthMode(mode);
+      setTimeout(() => $(mode === 'signup' ? 'signupName' : 'loginEmail').focus(), 60);
+    }
+    function closeAuth() {
+      backdrop.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+    function setAuthMode(mode) {
+      const signup = mode === 'signup';
+      $('loginTab').classList.toggle('active', !signup);
+      $('signupTab').classList.toggle('active', signup);
+      loginForm.classList.toggle('active', !signup);
+      signupForm.classList.toggle('active', signup);
+      $('authTitle').textContent = signup ? 'Create your account' : 'Welcome back';
+      $('authSubtitle').textContent = signup ? 'Join Eventora and start planning your special day.' : 'Log in to continue planning your special event.';
+      $('loginMessage').textContent = '';
+      $('signupMessage').textContent = '';
+    }
+    $('openLogin').addEventListener('click', () => openAuth('login'));
+    $('footerLogin').addEventListener('click', event => { event.preventDefault(); openAuth('login'); });
+    $('authClose').addEventListener('click', closeAuth);
+    $('loginTab').addEventListener('click', () => setAuthMode('login'));
+    $('signupTab').addEventListener('click', () => setAuthMode('signup'));
+    backdrop.addEventListener('click', event => { if (event.target === backdrop) closeAuth(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') closeAuth(); });
+
+    // DEMO account functions. localStorage is not secure and is not a real backend.
+    function getAccounts() {
+      try { return JSON.parse(localStorage.getItem('eventoraDemoAccounts') || '[]'); }
+      catch (error) { return []; }
+    }
+    signupForm.addEventListener('submit', event => {
+      event.preventDefault();
+      if (!signupForm.reportValidity()) return;
+      const name = $('signupName').value.trim();
+      const email = $('signupEmail').value.trim().toLowerCase();
+      const password = $('signupPassword').value;
+      const confirm = $('signupConfirm').value;
+      if (password !== confirm) {
+        $('signupMessage').style.color = '#b42318';
+        $('signupMessage').textContent = 'Passwords do not match. Please try again.';
+        return;
+      }
+      const accounts = getAccounts();
+      if (accounts.some(account => account.email === email)) {
+        $('signupMessage').style.color = '#b42318';
+        $('signupMessage').textContent = 'This email already has a demo account. Please log in.';
+        return;
+      }
+      accounts.push({ name, email, password });
+      try {
+        localStorage.setItem('eventoraDemoAccounts', JSON.stringify(accounts));
+        $('signupMessage').style.color = '#28794b';
+        $('signupMessage').textContent = 'Account created! You can now log in on this browser.';
+        signupForm.reset();
+      } catch (error) {
+        $('signupMessage').style.color = '#b42318';
+        $('signupMessage').textContent = 'Browser storage is unavailable. Please allow site storage and try again.';
+      }
+    });
+
+    loginForm.addEventListener('submit', event => {
+      event.preventDefault();
+      if (!loginForm.reportValidity()) return;
+      const email = $('loginEmail').value.trim().toLowerCase();
+      const password = $('loginPassword').value;
+      const account = getAccounts().find(item => item.email === email && item.password === password);
+      if (!account) {
+        $('loginMessage').style.color = '#b42318';
+        $('loginMessage').textContent = 'Account not found or password incorrect. Sign up first or check your details.';
+        return;
+      }
+      $('loginMessage').style.color = '#28794b';
+      $('loginMessage').textContent = `Welcome, ${account.name}! You are logged in for this demo.`;
+      $('openLogin').textContent = `Hi, ${account.name.split(' ')[0]} ♡`;
+      setTimeout(closeAuth, 1600);
+    });
+
+    // Event booking form demo
+    const dateInput = $('date');
+    const today = new Date();
+    const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().split('T')[0];
+    dateInput.min = localDate;
+    document.querySelectorAll('.book-type').forEach(link => link.addEventListener('click', () => {
+      $('eventType').value = link.dataset.type;
+    }));
+    $('bookingForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      if (!form.reportValidity()) return;
+      const name = $('name').value.trim();
+      const type = $('eventType').value;
+      $('formMessage').textContent = `Thank you, ${name}! Your ${type.toLowerCase()} request is ready in this demo. It has not been sent to a business.`;
+      form.reset();
+      dateInput.min = localDate;
+    });
+    $('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
